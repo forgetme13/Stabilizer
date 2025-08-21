@@ -1026,6 +1026,22 @@ def main():
     except Exception as e:
         logger.error("Error executing command: %s", str(e))
         sys.exit(1)
+# ---------- Deployment Helpers ----------
+
+def check_ffmpeg():
+    """Periksa apakah FFmpeg terinstall"""
+    try:
+        subprocess.run(['ffmpeg', '-version'], capture_output=True, check=True)
+        logger.info("FFmpeg is available")
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        logger.error("FFmpeg not found. Please install FFmpeg.")
+        return False
+
+def setup_directories():
+    """Setup direktori yang diperlukan"""
+    os.makedirs(STORAGE_DIR, exist_ok=True)
+    logger.info("Storage directory: %s", STORAGE_DIR)
 
 if __name__ == '__main__':
     # Inisialisasi database jika belum ada
